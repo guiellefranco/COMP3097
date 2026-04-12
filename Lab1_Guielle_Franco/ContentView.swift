@@ -109,6 +109,21 @@ struct ContentView: View {
         feedbackColor = .clear
         hasAnsweredCurrentQuestion = false
     }
+    
+    func handleTimerTick() {
+        if !hasAnsweredCurrentQuestion {
+            wrongAnswers += 1
+            totalAttempts += 1
+            feedbackSymbol = "✘"
+            feedbackColor = .red
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                generateNewNumber()
+            }
+        } else {
+            generateNewNumber()
+        }
+    }
 }
 
 #Preview {
