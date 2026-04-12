@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @State private var currentNumber: Int = Int.random(in: 1...100)
     @State private var correctAnswers: Int = 0
     @State private var wrongAnswers: Int = 0
@@ -15,6 +16,8 @@ struct ContentView: View {
     @State private var feedbackSymbol: String = ""
     @State private var feedbackColor: Color = .clear
     @State private var hasAnsweredCurrentQuestion: Bool = false
+    
+    let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
     
     var body: some View {
         VStack(spacing: 30) {
