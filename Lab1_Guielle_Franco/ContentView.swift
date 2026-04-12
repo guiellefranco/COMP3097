@@ -12,9 +12,12 @@ struct ContentView: View {
     @State private var currentNumber: Int = Int.random(in: 1...100)
     
     var body: some View {
-        VStack {
+        VStack(spacing: 30) {
             Text("Prime Number Game")
+            
             Text("\(currentNumber)")
+                .font(.system(size: 64, weight: .light, design: .serif))
+                .foregroundColor(.mint)
         }
         .padding()
     }
