@@ -66,7 +66,7 @@ struct ContentView: View {
             }
             .disabled(hasAnsweredCurrentQuestion || isWaitingForNextQuestion)
             
-            // shows ✔ or ✘ after answering
+            // shows "correct" or "wrong" symbols after answering
             Text(feedbackSymbol)
                 .font(.system(size: 90, weight: .bold))
                 .foregroundColor(feedbackColor)
