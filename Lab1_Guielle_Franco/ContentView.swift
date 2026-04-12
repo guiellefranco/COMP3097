@@ -95,6 +95,13 @@ struct ContentView: View {
         
         totalAttempts += 1
     }
+    
+    func generateNewNumber() {
+        currentNumber = Int.random(in: 1...100)
+        feedbackSymbol = ""
+        feedbackColor = .clear
+        hasAnsweredCurrentQuestion = false
+    }
 }
 
 #Preview {
