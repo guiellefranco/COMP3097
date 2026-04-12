@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Lab1_Guielle_Franco
-//
-//  Created by Guielle Mikhailavich Yre Franco on 2026-04-11.
-//
-
 import SwiftUI
 internal import Combine
 
@@ -20,8 +13,10 @@ struct ContentView: View {
     
     @State private var showResultDialog: Bool = false
     @State private var hasAnsweredCurrentQuestion: Bool = false
+    @State private var isWaitingForNextQuestion: Bool = false
+    @State private var timeRemaining: Int = 5
     
-    let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         VStack(spacing: 30) {
@@ -32,6 +27,10 @@ struct ContentView: View {
                 .font(.system(size: 64, weight: .light, design: .serif))
                 .foregroundColor(.mint)
             
+            Text("Time left: \(timeRemaining)")
+                .font(.title3)
+                .foregroundColor(.orange)
+            
             Button(action: {
                 checkAnswer(userSaysPrime: true)
             }) {
@@ -39,6 +38,7 @@ struct ContentView: View {
                     .font(.title2)
                     .foregroundColor(.mint)
             }
+            .disabled(hasAnsweredCurrentQuestion || isWaitingForNextQuestion)
             
             Button(action: {
                 checkAnswer(userSaysPrime: false)
@@ -47,6 +47,7 @@ struct ContentView: View {
                     .font(.title2)
                     .foregroundColor(.mint)
             }
+            .disabled(hasAnsweredCurrentQuestion || isWaitingForNextQuestion)
             
             Text(feedbackSymbol)
                 .font(.system(size: 90, weight: .bold))
@@ -82,9 +83,10 @@ struct ContentView: View {
     }
     
     func checkAnswer(userSaysPrime: Bool) {
-        guard !hasAnsweredCurrentQuestion else { return }
+        guard !hasAnsweredCurrentQuestion && !isWaitingForNextQuestion else { return }
         
         hasAnsweredCurrentQuestion = true
+        isWaitingForNextQuestion = true
         
         let actualPrime = isPrime(currentNumber)
         
@@ -99,28 +101,33 @@ struct ContentView: View {
         }
         
         totalAttempts += 1
-        
         handleAttemptCompletion()
     }
     
     func handleTimerTick() {
-        // If user DID NOT answer → mark wrong
-        if !hasAnsweredCurrentQuestion {
-            wrongAnswers += 1
-            totalAttempts += 1
-            feedbackSymbol = "✘"
-            feedbackColor = .red
-            
-            handleAttemptCompletion()
-        }
+        guard !isWaitingForNextQuestion else { return }
         
-        // Always reset for next question
-        generateNewNumber()
+        if timeRemaining > 1 {
+            timeRemaining -= 1
+        } else {
+            if !hasAnsweredCurrentQuestion {
+                wrongAnswers += 1
+                totalAttempts += 1
+                feedbackSymbol = "✘"
+                feedbackColor = .red
+                isWaitingForNextQuestion = true
+                handleAttemptCompletion()
+            }
+        }
     }
     
     func handleAttemptCompletion() {
         if totalAttempts % 10 == 0 {
             showResultDialog = true
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                generateNewNumber()
+            }
         }
     }
     
@@ -129,6 +136,8 @@ struct ContentView: View {
         feedbackSymbol = ""
         feedbackColor = .clear
         hasAnsweredCurrentQuestion = false
+        isWaitingForNextQuestion = false
+        timeRemaining = 5
     }
     
     func isPrime(_ number: Int) -> Bool {
