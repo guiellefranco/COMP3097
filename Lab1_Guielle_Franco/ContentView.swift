@@ -61,6 +61,9 @@ struct ContentView: View {
                 .padding(.bottom)
         }
         .padding()
+        .onReceive(timer) { _ in
+            handleTimerTick()
+        }
     }
     
     func isPrime(_ number: Int) -> Bool {
