@@ -121,10 +121,6 @@ struct ContentView: View {
     func handleAttemptCompletion() {
         if totalAttempts % 10 == 0 {
             showResultDialog = true
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                generateNewNumber()
-            }
         }
     }
     
