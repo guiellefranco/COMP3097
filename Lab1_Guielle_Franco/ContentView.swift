@@ -25,11 +25,13 @@ struct ContentView: View {
                 .foregroundColor(.mint)
             
             Button("Prime") {
+                checkAnswer(userSaysPrime: true)
             }
             .font(.title2)
             .foregroundColor(.mint)
             
             Button("Not Prime") {
+                checkAnswer(userSaysPrime: false)
             }
             .font(.title2)
             .foregroundColor(.mint)
@@ -72,6 +74,26 @@ struct ContentView: View {
         }
         
         return true
+    }
+    
+    func checkAnswer(userSaysPrime: Bool) {
+        guard !hasAnsweredCurrentQuestion else { return }
+        
+        hasAnsweredCurrentQuestion = true
+        
+        let actualPrime = isPrime(currentNumber)
+        
+        if userSaysPrime == actualPrime {
+            correctAnswers += 1
+            feedbackSymbol = "✔"
+            feedbackColor = .green
+        } else {
+            wrongAnswers += 1
+            feedbackSymbol = "✘"
+            feedbackColor = .red
+        }
+        
+        totalAttempts += 1
     }
 }
 
