@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var totalAttempts: Int = 0
     @State private var feedbackSymbol: String = ""
     @State private var feedbackColor: Color = .clear
+    @State private var hasAnsweredCurrentQuestion: Bool = false
     
     var body: some View {
         VStack(spacing: 30) {
@@ -54,6 +55,23 @@ struct ContentView: View {
                 .padding(.bottom)
         }
         .padding()
+    }
+    
+    func isPrime(_ number: Int) -> Bool {
+        if number < 2 { return false }
+        if number == 2 { return true }
+        if number % 2 == 0 { return false }
+        
+        let maxDivisor = Int(Double(number).squareRoot())
+        if maxDivisor >= 3 {
+            for i in stride(from: 3, through: maxDivisor, by: 2) {
+                if number % i == 0 {
+                    return false
+                }
+            }
+        }
+        
+        return true
     }
 }
 
