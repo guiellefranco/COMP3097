@@ -94,6 +94,10 @@ struct ContentView: View {
         }
         
         totalAttempts += 1
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            generateNewNumber()
+        }
     }
     
     func generateNewNumber() {
