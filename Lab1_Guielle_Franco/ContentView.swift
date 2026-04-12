@@ -21,6 +21,9 @@ struct ContentView: View {
             
             Button("Prime") {
             }
+            
+            Button("Not Prime") {
+            }
         }
         .padding()
     }
