@@ -14,8 +14,10 @@ struct ContentView: View {
     @State private var correctAnswers: Int = 0
     @State private var wrongAnswers: Int = 0
     @State private var totalAttempts: Int = 0
+    
     @State private var feedbackSymbol: String = ""
     @State private var feedbackColor: Color = .clear
+    
     @State private var showResultDialog: Bool = false
     @State private var hasAnsweredCurrentQuestion: Bool = false
     
@@ -23,23 +25,28 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 30) {
+            
             Spacer()
             
             Text("\(currentNumber)")
                 .font(.system(size: 64, weight: .light, design: .serif))
                 .foregroundColor(.mint)
             
-            Button("Prime") {
+            Button(action: {
                 checkAnswer(userSaysPrime: true)
+            }) {
+                Text("Prime")
+                    .font(.title2)
+                    .foregroundColor(.mint)
             }
-            .font(.title2)
-            .foregroundColor(.mint)
             
-            Button("Not Prime") {
+            Button(action: {
                 checkAnswer(userSaysPrime: false)
+            }) {
+                Text("Not Prime")
+                    .font(.title2)
+                    .foregroundColor(.mint)
             }
-            .font(.title2)
-            .foregroundColor(.mint)
             
             Text(feedbackSymbol)
                 .font(.system(size: 90, weight: .bold))
@@ -74,23 +81,6 @@ struct ContentView: View {
         }
     }
     
-    func isPrime(_ number: Int) -> Bool {
-        if number < 2 { return false }
-        if number == 2 { return true }
-        if number % 2 == 0 { return false }
-        
-        let maxDivisor = Int(Double(number).squareRoot())
-        if maxDivisor >= 3 {
-            for i in stride(from: 3, through: maxDivisor, by: 2) {
-                if number % i == 0 {
-                    return false
-                }
-            }
-        }
-        
-        return true
-    }
-    
     func checkAnswer(userSaysPrime: Bool) {
         guard !hasAnsweredCurrentQuestion else { return }
         
@@ -109,26 +99,23 @@ struct ContentView: View {
         }
         
         totalAttempts += 1
+        
         handleAttemptCompletion()
     }
     
-    func generateNewNumber() {
-        currentNumber = Int.random(in: 1...100)
-        feedbackSymbol = ""
-        feedbackColor = .clear
-        hasAnsweredCurrentQuestion = false
-    }
-    
     func handleTimerTick() {
+        // If user DID NOT answer → mark wrong
         if !hasAnsweredCurrentQuestion {
             wrongAnswers += 1
             totalAttempts += 1
             feedbackSymbol = "✘"
             feedbackColor = .red
+            
             handleAttemptCompletion()
-        } else {
-            generateNewNumber()
         }
+        
+        // Always reset for next question
+        generateNewNumber()
     }
     
     func handleAttemptCompletion() {
@@ -139,6 +126,30 @@ struct ContentView: View {
                 generateNewNumber()
             }
         }
+    }
+    
+    func generateNewNumber() {
+        currentNumber = Int.random(in: 1...100)
+        feedbackSymbol = ""
+        feedbackColor = .clear
+        hasAnsweredCurrentQuestion = false
+    }
+    
+    func isPrime(_ number: Int) -> Bool {
+        if number < 2 { return false }
+        if number == 2 { return true }
+        if number % 2 == 0 { return false }
+        
+        let maxDivisor = Int(Double(number).squareRoot())
+        if maxDivisor >= 3 {
+            for i in stride(from: 3, through: maxDivisor, by: 2) {
+                if number % i == 0 {
+                    return false
+                }
+            }
+        }
+        
+        return true
     }
 }
 
