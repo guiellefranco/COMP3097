@@ -109,10 +109,7 @@ struct ContentView: View {
         }
         
         totalAttempts += 1
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            generateNewNumber()
-        }
+        handleAttemptCompletion()
     }
     
     func generateNewNumber() {
@@ -128,12 +125,19 @@ struct ContentView: View {
             totalAttempts += 1
             feedbackSymbol = "✘"
             feedbackColor = .red
-            
+            handleAttemptCompletion()
+        } else {
+            generateNewNumber()
+        }
+    }
+    
+    func handleAttemptCompletion() {
+        if totalAttempts % 10 == 0 {
+            showResultDialog = true
+        } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 generateNewNumber()
             }
-        } else {
-            generateNewNumber()
         }
     }
 }
