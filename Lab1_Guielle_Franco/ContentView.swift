@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var totalAttempts: Int = 0
     @State private var feedbackSymbol: String = ""
     @State private var feedbackColor: Color = .clear
+    @State private var showResultDialog: Bool = false
     @State private var hasAnsweredCurrentQuestion: Bool = false
     
     let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
@@ -61,6 +62,13 @@ struct ContentView: View {
                 .padding(.bottom)
         }
         .padding()
+        .alert("Results after 10 attempts", isPresented: $showResultDialog) {
+            Button("Continue") {
+                generateNewNumber()
+            }
+        } message: {
+            Text("Correct answers: \(correctAnswers)\nWrong answers: \(wrongAnswers)")
+        }
         .onReceive(timer) { _ in
             handleTimerTick()
         }
