@@ -18,6 +18,9 @@ struct ContentView: View {
             Text("\(currentNumber)")
                 .font(.system(size: 64, weight: .light, design: .serif))
                 .foregroundColor(.mint)
+            
+            Button("Prime") {
+            }
         }
         .padding()
     }
