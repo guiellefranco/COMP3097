@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var currentNumber: Int = 1
+    @State private var currentNumber: Int = Int.random(in: 1...100)
     
     var body: some View {
         VStack {
