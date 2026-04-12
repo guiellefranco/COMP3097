@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var correctAnswers: Int = 0
     @State private var wrongAnswers: Int = 0
     @State private var totalAttempts: Int = 0
+    @State private var feedbackSymbol: String = ""
+    @State private var feedbackColor: Color = .clear
     
     var body: some View {
         VStack(spacing: 30) {
@@ -30,6 +32,11 @@ struct ContentView: View {
             }
             .font(.title2)
             .foregroundColor(.mint)
+            
+            Text(feedbackSymbol)
+                .font(.system(size: 90, weight: .bold))
+                .foregroundColor(feedbackColor)
+                .frame(height: 120)
             
             Spacer()
             
