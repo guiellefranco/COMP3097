@@ -32,6 +32,19 @@ struct ContentView: View {
             .foregroundColor(.mint)
             
             Spacer()
+            
+            HStack {
+                Text("Correct: \(correctAnswers)")
+                Spacer()
+                Text("Wrong: \(wrongAnswers)")
+            }
+            .padding(.horizontal)
+            .font(.headline)
+            
+            Text("Attempts: \(totalAttempts)")
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .padding(.bottom)
         }
         .padding()
     }
