@@ -11,13 +11,11 @@ struct ContentView: View {
     private var products: FetchedResults<Product>
 
     @State private var currentIndex: Int = 0
-    
     @State private var showingListView = false
-    
     @State private var showingAddProduct = false
-    
     @State private var searchText = ""
     
+    // Filters products based on search input
     private var filteredProducts: [Product] {
         if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return Array(products)
@@ -35,11 +33,12 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
+                
                 TextField("Search by name or description", text: $searchText)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal)
                     .onChange(of: searchText) { _ in
-                        currentIndex = 0
+                        currentIndex = 0 // reset index when searching
                     }
                 
                 Button("Clear Search") {
@@ -75,7 +74,7 @@ struct ContentView: View {
             .padding()
             .navigationTitle("Product Viewer")
             .onAppear {
-                seedData()
+                seedData() // load initial data once
             }
         }
         .sheet(isPresented: $showingListView) {
@@ -87,6 +86,7 @@ struct ContentView: View {
         }
     }
 
+    // Prevent index from going out of bounds
     private var safeIndex: Int {
         min(currentIndex, max(filteredProducts.count - 1, 0))
     }
@@ -149,6 +149,7 @@ struct ContentView: View {
         .padding(.top)
     }
 
+    // Adds sample data only if database is empty
     private func seedData() {
         if products.isEmpty {
             let sampleProducts: [(String, String, String, Double, String)] = [
