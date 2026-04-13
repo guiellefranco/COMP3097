@@ -12,9 +12,7 @@ class CurrencyConverterApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Currency Converter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const CurrencyInputScreen(),
     );
   }
@@ -131,7 +129,9 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
           children: [
             TextField(
               controller: usdController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               onChanged: convertFromUSD,
               decoration: const InputDecoration(
                 labelText: 'USD',
@@ -141,7 +141,9 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: cadController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               onChanged: convertFromCAD,
               decoration: const InputDecoration(
                 labelText: 'CAD',
@@ -150,7 +152,27 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (usdController.text.isEmpty || cadController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a valid amount first.'),
+                    ),
+                  );
+                  return;
+                }
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SummaryScreen(
+                      usdValue: usdController.text,
+                      cadValue: cadController.text,
+                      exchangeRate: exchangeRate,
+                    ),
+                  ),
+                );
+              },
               child: const Text('Go to Summary'),
             ),
           ],
