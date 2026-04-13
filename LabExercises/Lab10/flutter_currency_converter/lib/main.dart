@@ -141,6 +141,13 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
   }
 
   @override
+  void dispose() {
+    usdController.dispose();
+    cadController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
