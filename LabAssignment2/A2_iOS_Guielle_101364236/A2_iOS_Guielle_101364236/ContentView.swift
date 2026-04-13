@@ -10,6 +10,21 @@ struct ContentView: View {
     ) var products: FetchedResults<Product>
 
     @State private var currentIndex = 0
+    
+    func seedData() {
+        if products.count == 0 {
+            for i in 1...10 {
+                let newProduct = Product(context: viewContext)
+                newProduct.productID = "\(i)"
+                newProduct.productName = "Product \(i)"
+                newProduct.productDescription = "Description \(i)"
+                newProduct.productPrice = Double(i * 10)
+                newProduct.productProvider = "Provider \(i)"
+            }
+
+            try? viewContext.save()
+        }
+    }
 
     var body: some View {
         VStack(spacing: 20) {
@@ -44,6 +59,9 @@ struct ContentView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            seedData()
         }
         .padding()
     }
