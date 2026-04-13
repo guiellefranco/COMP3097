@@ -55,29 +55,36 @@ struct AddProductView: View {
     }
 
     private func saveProduct() {
-        if productID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-            productName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-            productDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-            productPrice.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-            productProvider.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            
+        let trimmedID = productID.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedName = productName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedDescription = productDescription.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedPrice = productPrice.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedProvider = productProvider.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if trimmedID.isEmpty || trimmedName.isEmpty || trimmedDescription.isEmpty || trimmedPrice.isEmpty || trimmedProvider.isEmpty {
             alertMessage = "Please fill in all fields."
             showAlert = true
             return
         }
-        
-        guard let price = Double(productPrice) else {
+
+        if !trimmedID.allSatisfy({ $0.isNumber }) {
+            alertMessage = "Product ID must contain numbers only."
+            showAlert = true
+            return
+        }
+
+        guard let price = Double(trimmedPrice) else {
             alertMessage = "Please enter a valid price."
             showAlert = true
             return
         }
 
         let newProduct = Product(context: viewContext)
-        newProduct.productID = productID
-        newProduct.productName = productName
-        newProduct.productDescription = productDescription
+        newProduct.productID = trimmedID
+        newProduct.productName = trimmedName
+        newProduct.productDescription = trimmedDescription
         newProduct.productPrice = price
-        newProduct.productProvider = productProvider
+        newProduct.productProvider = trimmedProvider
 
         do {
             try viewContext.save()
