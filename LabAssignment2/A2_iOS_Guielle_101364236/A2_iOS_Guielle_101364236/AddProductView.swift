@@ -17,6 +17,8 @@ struct AddProductView: View {
     @State private var productDescription = ""
     @State private var productPrice = ""
     @State private var productProvider = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
 
     var body: some View {
         NavigationView {
@@ -31,6 +33,11 @@ struct AddProductView: View {
                 }
             }
             .navigationTitle("Add Product")
+            .alert("Invalid Input", isPresented: $showAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(alertMessage)
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -48,18 +55,36 @@ struct AddProductView: View {
     }
 
     private func saveProduct() {
+        if productID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            productName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            productDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            productPrice.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+            productProvider.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            
+            alertMessage = "Please fill in all fields."
+            showAlert = true
+            return
+        }
+        
+        guard let price = Double(productPrice) else {
+            alertMessage = "Please enter a valid price."
+            showAlert = true
+            return
+        }
+
         let newProduct = Product(context: viewContext)
         newProduct.productID = productID
         newProduct.productName = productName
         newProduct.productDescription = productDescription
-        newProduct.productPrice = Double(productPrice) ?? 0.0
+        newProduct.productPrice = price
         newProduct.productProvider = productProvider
 
         do {
             try viewContext.save()
             dismiss()
         } catch {
-            print("Error saving product: \(error.localizedDescription)")
+            alertMessage = "Error saving product."
+            showAlert = true
         }
     }
 }
