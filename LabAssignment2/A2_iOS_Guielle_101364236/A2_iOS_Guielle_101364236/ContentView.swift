@@ -30,7 +30,8 @@ struct ContentView: View {
         VStack(spacing: 20) {
             
             if products.count > 0 {
-                let product = products[currentIndex]
+                let safeIndex = min(currentIndex, products.count - 1)
+                let product = products[safeIndex]
 
                 Text(product.productName ?? "No Name")
                     .font(.title)
