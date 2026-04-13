@@ -42,6 +42,12 @@ struct ContentView: View {
                         currentIndex = 0
                     }
                 
+                Button("Clear Search") {
+                    searchText = ""
+                    currentIndex = 0
+                }
+                .font(.subheadline)
+                
                 if filteredProducts.isEmpty {
                     Text("No Products Available")
                         .font(.title2)
