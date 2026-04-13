@@ -50,16 +50,18 @@ struct ContentView: View {
                     productDetailView
                     navigationButtons
                     
-                    Button("View All Products") {
-                        showingListView = true
+                    VStack(spacing: 12) {
+                        Button("View All Products") {
+                            showingListView = true
+                        }
+                        .buttonStyle(.borderedProminent)
+
+                        Button("Add Product") {
+                            showingAddProduct = true
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
-                    .buttonStyle(.borderedProminent)
                     .padding(.top)
-                    
-                    Button("Add Product") {
-                        showingAddProduct = true
-                    }
-                    .buttonStyle(.borderedProminent)
                 }
 
                 Spacer()
@@ -105,10 +107,17 @@ struct ContentView: View {
 
                     Text(String(format: "Price: $%.2f", product.productPrice))
                         .font(.title3)
+                        .bold()
 
                     Text("Provider: \(product.productProvider ?? "")")
                         .foregroundColor(.gray)
                 }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(16)
+                .shadow(radius: 3)
+                .padding(.horizontal)
             }
         }
     }
@@ -120,6 +129,7 @@ struct ContentView: View {
                     currentIndex -= 1
                 }
             }
+            .buttonStyle(.bordered)
             .disabled(currentIndex == 0)
 
             Button("Next") {
@@ -127,6 +137,7 @@ struct ContentView: View {
                     currentIndex += 1
                 }
             }
+            .buttonStyle(.borderedProminent)
             .disabled(currentIndex >= filteredProducts.count - 1)
         }
         .padding(.top)
