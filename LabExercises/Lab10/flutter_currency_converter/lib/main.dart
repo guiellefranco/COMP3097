@@ -27,6 +27,52 @@ class CurrencyInputScreen extends StatefulWidget {
   State<CurrencyInputScreen> createState() => _CurrencyInputScreenState();
 }
 
+class SummaryScreen extends StatelessWidget {
+  final String usdValue;
+  final String cadValue;
+  final double exchangeRate;
+
+  const SummaryScreen({
+    super.key,
+    required this.usdValue,
+    required this.cadValue,
+    required this.exchangeRate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Conversion Summary'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('USD: $usdValue', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text('CAD: $cadValue', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Text(
+              'Exchange Rate: 1 USD = $exchangeRate CAD',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Back'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
   final TextEditingController usdController = TextEditingController();
   final TextEditingController cadController = TextEditingController();
