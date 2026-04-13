@@ -17,6 +17,20 @@ struct ContentView: View {
     @State private var showingAddProduct = false
     
     @State private var searchText = ""
+    
+    private var filteredProducts: [Product] {
+        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return Array(products)
+        } else {
+            return products.filter { product in
+                let name = product.productName?.lowercased() ?? ""
+                let description = product.productDescription?.lowercased() ?? ""
+                let query = searchText.lowercased()
+
+                return name.contains(query) || description.contains(query)
+            }
+        }
+    }
 
     var body: some View {
         NavigationView {
