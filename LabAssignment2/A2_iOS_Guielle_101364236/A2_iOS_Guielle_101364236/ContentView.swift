@@ -11,6 +11,10 @@ struct ContentView: View {
     private var products: FetchedResults<Product>
 
     @State private var currentIndex: Int = 0
+    
+    @State private var showingListView = false
+    
+    @State private var showingAddProduct = false
 
     var body: some View {
         NavigationView {
@@ -22,6 +26,17 @@ struct ContentView: View {
                 } else {
                     productDetailView
                     navigationButtons
+                    
+                    Button("View All Products") {
+                        showingListView = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding(.top)
+                    
+                    Button("Add Product") {
+                        showingAddProduct = true
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
 
                 Spacer()
@@ -31,6 +46,13 @@ struct ContentView: View {
             .onAppear {
                 seedData()
             }
+        }
+        .sheet(isPresented: $showingListView) {
+            ProductListView(products: Array(products))
+        }
+        .sheet(isPresented: $showingAddProduct) {
+            AddProductView()
+                .environment(\.managedObjectContext, viewContext)
         }
     }
 
