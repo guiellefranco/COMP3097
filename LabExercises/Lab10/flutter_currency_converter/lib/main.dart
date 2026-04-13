@@ -31,6 +31,47 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
   final TextEditingController usdController = TextEditingController();
   final TextEditingController cadController = TextEditingController();
 
+  final double exchangeRate = 1.35;
+  bool isUpdating = false;
+
+  void convertFromUSD(String value) {
+    if (isUpdating) return;
+    isUpdating = true;
+
+    if (value.isEmpty) {
+      cadController.clear();
+      isUpdating = false;
+      return;
+    }
+
+    final double? usd = double.tryParse(value);
+    if (usd != null) {
+      final double cad = usd * exchangeRate;
+      cadController.text = cad.toStringAsFixed(2);
+    }
+
+    isUpdating = false;
+  }
+
+  void convertFromCAD(String value) {
+    if (isUpdating) return;
+    isUpdating = true;
+
+    if (value.isEmpty) {
+      usdController.clear();
+      isUpdating = false;
+      return;
+    }
+
+    final double? cad = double.tryParse(value);
+    if (cad != null) {
+      final double usd = cad / exchangeRate;
+      usdController.text = usd.toStringAsFixed(2);
+    }
+
+    isUpdating = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +85,8 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
           children: [
             TextField(
               controller: usdController,
-              keyboardType: TextInputType.number,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              onChanged: convertFromUSD,
               decoration: const InputDecoration(
                 labelText: 'USD',
                 border: OutlineInputBorder(),
@@ -53,7 +95,8 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
             const SizedBox(height: 20),
             TextField(
               controller: cadController,
-              keyboardType: TextInputType.number,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              onChanged: convertFromCAD,
               decoration: const InputDecoration(
                 labelText: 'CAD',
                 border: OutlineInputBorder(),
