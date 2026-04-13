@@ -126,7 +126,15 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 20),
+            const Text(
+              'USD ↔ CAD Converter',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
             TextField(
               controller: usdController,
               keyboardType: const TextInputType.numberWithOptions(
@@ -135,6 +143,7 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
               onChanged: convertFromUSD,
               decoration: const InputDecoration(
                 labelText: 'USD',
+                hintText: 'Enter amount in USD',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -147,10 +156,17 @@ class _CurrencyInputScreenState extends State<CurrencyInputScreen> {
               onChanged: convertFromCAD,
               decoration: const InputDecoration(
                 labelText: 'CAD',
+                hintText: 'Enter amount in CAD',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
+            Text(
+              'Exchange Rate: 1 USD = $exchangeRate CAD',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 if (usdController.text.isEmpty || cadController.text.isEmpty) {
