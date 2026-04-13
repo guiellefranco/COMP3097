@@ -35,7 +35,14 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                if products.isEmpty {
+                TextField("Search by name or description", text: $searchText)
+                    .textFieldStyle(.roundedBorder)
+                    .padding(.horizontal)
+                    .onChange(of: searchText) { _ in
+                        currentIndex = 0
+                    }
+                
+                if filteredProducts.isEmpty {
                     Text("No Products Available")
                         .font(.title2)
                         .foregroundColor(.gray)
@@ -64,7 +71,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $showingListView) {
-            ProductListView(products: Array(products))
+            ProductListView(products: filteredProducts)
         }
         .sheet(isPresented: $showingAddProduct) {
             AddProductView()
@@ -73,12 +80,12 @@ struct ContentView: View {
     }
 
     private var safeIndex: Int {
-        min(currentIndex, max(products.count - 1, 0))
+        min(currentIndex, max(filteredProducts.count - 1, 0))
     }
 
     private var currentProduct: Product? {
-        guard !products.isEmpty else { return nil }
-        return products[safeIndex]
+        guard !filteredProducts.isEmpty else { return nil }
+        return filteredProducts[safeIndex]
     }
 
     private var productDetailView: some View {
@@ -116,11 +123,11 @@ struct ContentView: View {
             .disabled(currentIndex == 0)
 
             Button("Next") {
-                if currentIndex < products.count - 1 {
+                if currentIndex < filteredProducts.count - 1 {
                     currentIndex += 1
                 }
             }
-            .disabled(currentIndex >= products.count - 1)
+            .disabled(currentIndex >= filteredProducts.count - 1)
         }
         .padding(.top)
     }
