@@ -47,15 +47,39 @@ class SummaryScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('USD: $usdValue', style: const TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
-            Text('CAD: $cadValue', style: const TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
-            Text(
-              'Exchange Rate: 1 USD = $exchangeRate CAD',
-              style: const TextStyle(fontSize: 18),
+            const SizedBox(height: 20),
+            const Text(
+              'Conversion Summary',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
+            Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'USD: $usdValue',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'CAD: $cadValue',
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Exchange Rate: 1 USD = $exchangeRate CAD',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 30),
             ElevatedButton(
