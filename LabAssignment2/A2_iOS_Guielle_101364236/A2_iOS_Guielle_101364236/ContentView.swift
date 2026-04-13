@@ -15,6 +15,8 @@ struct ContentView: View {
     @State private var showingListView = false
     
     @State private var showingAddProduct = false
+    
+    @State private var searchText = ""
 
     var body: some View {
         NavigationView {
